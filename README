@@ -2,6 +2,6 @@ plist.js is just a simple library to read and create Property Lists from Javascr
 
 Eventually, it'll be able (hopefully) to handle Binary and ASCII plists, but, for now, only XML plists are supported.
 
-For an extremely messy example, see the contents of editor/ (which, regrettably, only works in Firefox, Chrome, and Opera; Safari lacks full support for the HTML5 file API, which IE 10 /hopefully/ should have).
+For an extremely messy example, see the contents of editor/ (which, regrettably, only works in Firefox, Chrome, Opera, and Safari [ugly]; IE 10 /hopefully/ will be the first version of IE supported supported).
 
 Enjoy!

@@ -76,7 +76,7 @@ function objectForChildNode(childNode) {
 function parseXMLDictionary(node) {
 	var children=node.childNodes;
 	var i=0;
-	var dict=new Dictionary();
+	var dict={};
 
 	var key;
 
@@ -88,7 +88,7 @@ function parseXMLDictionary(node) {
 
 			childNode=children[i+2];
 
-			dict.set(objectForChildNode(childNode), key);
+			dict[key]=objectForChildNode(childNode);
 		}
 
 		i++;
@@ -120,20 +120,13 @@ function parseXMLArray(node) {
 	return ar;
 }
 
-Dictionary.prototype.toPlistXML=function() {
+Object.prototype.toPlistXML=function() {
 	var ret="<dict>\n";
 	var item;
 
-	for (var i=0; i<this.items[0].length; i++) {
-		if (this.items[1][i]!=null && this.items[1][i].toPlistXML) {
-			if (this.items[1][i] instanceof Dictionary || this.items[1][i] instanceof Array) {
-				item=this.items[1][i].toPlistXML();
-				item=item.replace(/\n/g, "\n\t");
-				ret+="\t<key>"+this.items[0][i]+"</key>\n\t"+item+"\n";
-				item="";
-			} else {
-				ret+="\t<key>"+this.items[0][i]+"</key>\n\t"+this.items[1][i].toPlistXML()+"\n";
-			}
+	for (var i in this) {
+		if (this[i] && typeof this[i]!="function") {
+			ret+="\t<key>"+i+"</key>\n\t"+this[i].toPlistXML()+"\n";
 		}
 	}
 
@@ -142,7 +135,7 @@ Dictionary.prototype.toPlistXML=function() {
 	return ret;
 };
 
-Dictionary.prototype.exportXML=function() {
+Object.prototype.exportXML=function() {
 	return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n"+this.toPlistXML()+"\n</plist>";
 };
 

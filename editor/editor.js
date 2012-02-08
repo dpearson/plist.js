@@ -47,11 +47,11 @@ function arrayToHTML(ar, key, padding) {
 				checked="";
 			}
 			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\">Item "+i+"<input type=\"checkbox\" style=\"position:absolute; left:50%; border-width:0px;\" value=\""+ar[i]+"\" id=\""+key+"_"+i+"\""+checked+"></div>";
-		} else if (ar[i] instanceof Dictionary) {
-			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px;\" id=\""+key+"_"+i+"arrow\" onclick=\"if($('"+key+"_"+i+"cont').style.display=='none'){$('"+key+"_"+i+"cont').style.display='';$('"+key+"_"+i+"arrow').src='res/arrow-down.png';}else{$('"+key+"_"+i+"cont').style.display='none';$('"+key+"_"+i+"arrow').src='res/arrow-right.png';}\"> Item "+i+"</div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+key+"_"+i+"cont\">"+dictToHTML(ar[i], key+"_"+i, 15)+"</div>";
 		} else if (ar[i] instanceof Array) {
 			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px;\" id=\""+key+"_"+i+"arrow\" onclick=\"if($('"+key+"_"+i+"cont').style.display=='none'){$('"+key+"_"+i+"cont').style.display='';$('"+key+"_"+i+"arrow').src='res/arrow-down.png';}else{$('"+key+"_"+i+"cont').style.display='none';$('"+key+"_"+i+"arrow').src='res/arrow-right.png';}\"> Item "+i+"</div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+key+"_"+i+"cont\">"+arrayToHTML(ar[i], key+"_"+i, 15)+"</div>";
-		}		
+		} else if (typeof ar[i]!="function") {
+			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px;\" id=\""+key+"_"+i+"arrow\" onclick=\"if($('"+key+"_"+i+"cont').style.display=='none'){$('"+key+"_"+i+"cont').style.display='';$('"+key+"_"+i+"arrow').src='res/arrow-down.png';}else{$('"+key+"_"+i+"cont').style.display='none';$('"+key+"_"+i+"arrow').src='res/arrow-right.png';}\"> Item "+i+"</div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+key+"_"+i+"cont\">"+dictToHTML(ar[i], key+"_"+i, 15)+"</div>";
+		}
 	}
 
 	return htmlCont;
@@ -59,43 +59,42 @@ function arrayToHTML(ar, key, padding) {
 
 function dictToHTML(dict, parent, padding) {
 	var htmlCont="";
-	for (var i=0; i<dict.items[0].length; i++) {
-		if (typeof dict.items[1][i]=="string" || dict.items[1][i] instanceof String || typeof dict.items[1][i]=="number" || dict.items[1][i] instanceof Number) {
-			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+dict.items[0][i]+"\" id=\""+dict.items[0][i]+"_"+parent+"key\"><input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+dict.items[1][i]+"\" id=\""+dict.items[0][i]+"_"+parent+"val\"></div>";
-		} else if (typeof dict.items[1][i]=="date" || dict.items[1][i] instanceof Date) {
-			//htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+dict.items[0][i]+"\"><input type=\"datetime\" style=\"position:absolute; left:50%; width:50%; border-width:0px;\" value=\""+dict.items[1][i]+"\"></div>";
-			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+dict.items[0][i]+"\" id=\""+dict.items[0][i]+"_"+parent+"key\"><span style=\"position:absolute; left:50%; width:45%; border-width:0px;\"><select id=\""+dict.items[0][i]+"_"+parent+"month\">"
+	for (var i in dict) {
+		if (typeof dict[i]=="string" || dict[i] instanceof String || typeof dict[i]=="number" || dict[i] instanceof Number) {
+			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"><input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+dict[i]+"\" id=\""+i+"_"+parent+"val\"></div>";
+		} else if (typeof dict[i]=="date" || dict[i] instanceof Date) {
+			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"><span style=\"position:absolute; left:50%; width:45%; border-width:0px;\"><select id=\""+i+"_"+parent+"month\">"
 			var months=["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 			for (var n=1; n<=12; n++) {
 				htmlCont+="<option value=\""+n+"\"";
-				if (dict.items[1][i].getMonth()+1==n) {
+				if (dict[i].getMonth()+1==n) {
 					htmlCont+=" selected=\"selected\"";
 				}
 				htmlCont+=">"+months[n-1]+"</option>";
 			}
-			var actHours=dict.items[1][i].getHours();
+			var actHours=dict[i].getHours();
 			var pm=false;
 			if (actHours>12) {
 				actHours-=12;
 				pm=true;
 			}
-			htmlCont+="</select> <input type=\"text\" maxlength=2 size=2 id=\""+dict.items[0][i]+"_"+parent+"day\" value=\""+dict.items[1][i].getDate()+"\"> <input type=\"text\" maxlength=4 size=4 id=\""+dict.items[0][i]+"_"+parent+"year\" value=\""+dict.items[1][i].getFullYear()+"\"><blah style=\"padding-left:50px;\"><input type=\"text\" maxlength=2 size=2 id=\""+dict.items[0][i]+"_"+parent+"hr\" value=\""+actHours+"\">:<input type=\"text\" maxlength=2 size=2 id=\""+dict.items[0][i]+"_"+parent+"min\" value=\""+dict.items[1][i].getMinutes()+"\">:<input type=\"text\" maxlength=2 size=2 id=\""+dict.items[0][i]+"_"+parent+"sec\" value=\""+dict.items[1][i].getSeconds()+"\"> <select id=\""+dict.items[0][i]+"_"+parent+"tod\"><option value=\"0\">AM</option><option value=\"12\""
+			htmlCont+="</select> <input type=\"text\" maxlength=2 size=2 id=\""+i+"_"+parent+"day\" value=\""+dict[i].getDate()+"\"> <input type=\"text\" maxlength=4 size=4 id=\""+i+"_"+parent+"year\" value=\""+dict[i].getFullYear()+"\"><blah style=\"padding-left:50px;\"><input type=\"text\" maxlength=2 size=2 id=\""+i+"_"+parent+"hr\" value=\""+actHours+"\">:<input type=\"text\" maxlength=2 size=2 id=\""+i+"_"+parent+"min\" value=\""+dict[i].getMinutes()+"\">:<input type=\"text\" maxlength=2 size=2 id=\""+i+"_"+parent+"sec\" value=\""+dict[i].getSeconds()+"\"> <select id=\""+i+"_"+parent+"tod\"><option value=\"0\">AM</option><option value=\"12\""
 			if (pm) {
 				htmlCont+=" selected=\"selected\"";
 			}
 			htmlCont+=">PM</option></select>";
 			htmlCont+="</select></span></div>";
-		} else if (typeof dict.items[1][i]=="boolean" || dict.items[1][i] instanceof Boolean || dict.items[1][i]==false) {
+		} else if (typeof dict[i]=="boolean" || dict[i] instanceof Boolean || dict[i]==false) {
 			var checked=" checked=\"checked\"";
-			if (dict.items[1][i]==false) {
+			if (dict[i]==false) {
 				checked="";
 			}
-			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+dict.items[0][i]+"\" id=\""+dict.items[0][i]+"_"+parent+"key\"><input type=\"checkbox\" style=\"position:absolute; left:50%; border-width:0px;\""+checked+"\" id=\""+dict.items[0][i]+"_"+parent+"val\"></div>";
-		} else if (dict.items[1][i] instanceof Dictionary) {
-			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px; top:20px;\" id=\""+dict.items[0][i]+"_"+parent+"arrow\" onclick=\"if($('"+dict.items[0][i]+"_"+parent+"cont').style.display=='none'){$('"+dict.items[0][i]+"_"+parent+"cont').style.display='';$('"+dict.items[0][i]+"_"+parent+"arrow').src='res/arrow-down.png';}else{$('"+dict.items[0][i]+"_"+parent+"cont').style.display='none';$('"+dict.items[0][i]+"_"+parent+"arrow').src='res/arrow-right.png';}\"> <input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+dict.items[0][i]+"\" id=\""+dict.items[0][i]+"_"+parent+"key\"></div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+dict.items[0][i]+"_"+parent+"cont\">"+dictToHTML(dict.items[1][i], dict.items[0][i]+"_"+parent, 15)+"</div>";
-		} else if (dict.items[1][i] instanceof Array) {
-			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px; top:20px;\" id=\""+dict.items[0][i]+"_"+parent+"arrow\" onclick=\"if($('"+dict.items[0][i]+"_"+parent+"cont').style.display=='none'){$('"+dict.items[0][i]+"_"+parent+"cont').style.display='';$('"+dict.items[0][i]+"_"+parent+"arrow').src='res/arrow-down.png';}else{$('"+dict.items[0][i]+"_"+parent+"cont').style.display='none';$('"+dict.items[0][i]+"_"+parent+"arrow').src='res/arrow-right.png';}\"> <input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+dict.items[0][i]+"\" id=\""+dict.items[0][i]+"_"+parent+"key\"></div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+dict.items[0][i]+"_"+parent+"cont\">"+arrayToHTML(dict.items[1][i], dict.items[0][i]+"_"+parent, 15)+"</div>";
-		}		
+			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"><input type=\"checkbox\" style=\"position:absolute; left:50%; border-width:0px;\""+checked+"\" id=\""+i+"_"+parent+"val\"></div>";
+		} else if (dict[i] instanceof Array) {
+			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px; top:20px;\" id=\""+i+"_"+parent+"arrow\" onclick=\"if($('"+i+"_"+parent+"cont').style.display=='none'){$('"+i+"_"+parent+"cont').style.display='';$('"+i+"_"+parent+"arrow').src='res/arrow-down.png';}else{$('"+i+"_"+parent+"cont').style.display='none';$('"+i+"_"+parent+"arrow').src='res/arrow-right.png';}\"> <input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"></div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+i+"_"+parent+"cont\">"+arrayToHTML(dict[i], i+"_"+parent, 15)+"</div>";
+		} else if (typeof dict[i]!="function") {
+			htmlCont+="<div style=\"position:relative; left:5%; width:100%;  padding:"+padding+"px;\"><img src=\"res/arrow-right.png\" style=\"width:12px; position:absolute; left:-12px; top:20px;\" id=\""+i+"_"+parent+"arrow\" onclick=\"if($('"+i+"_"+parent+"cont').style.display=='none'){$('"+i+"_"+parent+"cont').style.display='';$('"+i+"_"+parent+"arrow').src='res/arrow-down.png';}else{$('"+i+"_"+parent+"cont').style.display='none';$('"+i+"_"+parent+"arrow').src='res/arrow-right.png';}\"> <input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"></div><div style=\"position:relative; left:5%; width:90%;  padding-bottom:"+padding+"px; padding-left:"+padding+"px; padding-right:"+padding+"px; display:none;\" id=\""+i+"_"+parent+"cont\">"+dictToHTML(dict[i], i+"_"+parent, 15)+"</div>";
+		}
 	}
 
 	return htmlCont;
@@ -118,13 +117,13 @@ function savearray(ar, key) {
 				if ($(key+"_"+i)!=null) {
 					ar[i]=$(key+"_"+i).checked;
 				}
-			} else if (ar[i] instanceof Dictionary) {
-				if ($(key+"_"+i+"cont")!=null) {
-					ar[i]=savedict(ar[i], key+"_"+i);
-				}
 			} else if (ar[i] instanceof Array || typeof ar[i]=="array") {
 				if ($(key+"_"+i+"cont")!=null) {
 					ar[i]=savearray(ar[i], key+"_"+i);
+				}
+			} else if (typeof ar[i]!="function") {
+				if ($(key+"_"+i+"cont")!=null) {
+					ar[i]=savedict(ar[i], key+"_"+i);
 				}
 			}
 	}
@@ -133,57 +132,62 @@ function savearray(ar, key) {
 }
 
 function savedict(dict, key) {
-	for (var i=0; i<dict.items[0].length; i++) {
-			if (typeof dict.items[1][i]=="string" || dict.items[1][i] instanceof String || typeof dict.items[1][i]=="number" || dict.items[1][i] instanceof Number) {
-				if ($(dict.items[0][i]+"_"+key+"val")!=null) {
-					var keyval=$(dict.items[0][i]+"_"+key+"key").value;
-					var val=$(dict.items[0][i]+"_"+key+"val").value;
-					if (keyval!=dict.items[0][i]) {
-						dict.changeKey(dict.items[0][i], keyval);
+	for (var i in dict) {
+			if (typeof dict[i]=="string" || dict[i] instanceof String || typeof dict[i]=="number" || dict[i] instanceof Number) {
+				if ($(i+"_"+key+"val")!=null) {
+					var keyval=$(i+"_"+key+"key").value;
+					var val=$(i+"_"+key+"val").value;
+					if (keyval!=i) {
+						dict[keyval]=dict[i];
+						delete dict[i];
 					}
 
-					if (val!=dict.items[1][i]) {
-						dict.set(val, keyval);
+					if (val!=dict[i]) {
+						dict[keyval]=val;
 					}
 				}
-			} else if (typeof dict.items[1][i]=="boolean" || dict.items[1][i] instanceof Boolean) {
-				if ($(dict.items[0][i]+"_"+key+"val")!=null) {
-					var keyval=$(dict.items[0][i]+"_"+key+"key").value;
-					var val=$(dict.items[0][i]+"_"+key+"val").checked;
-					if (keyval!=dict.items[0][i]) {
-						dict.changeKey(dict.items[0][i], keyval);
+			} else if (typeof dict[i]=="boolean" || dict[i] instanceof Boolean) {
+				if ($(i+"_"+key+"val")!=null) {
+					var keyval=$(i+"_"+key+"key").value;
+					var val=$(i+"_"+key+"val").checked;
+					if (keyval!=i) {
+						dict[keyval]=dict[i];
+						delete dict[i];
 					}
 
-					if (val!=dict.items[1][i]) {
-						dict.set(val, keyval);
+					if (val!=dict[i]) {
+						dict[keyval]=val;
 					}
 				}
-			} else if (typeof dict.items[1][i]=="date" || dict.items[1][i] instanceof Date) {
-				var keyval=$(dict.items[0][i]+"_"+key+"key").value;
-				if (keyval!=dict.items[0][i]) {
-					dict.changeKey(dict.items[0][i], keyval);
+			} else if (typeof dict[i]=="date" || dict[i] instanceof Date) {
+				var keyval=$(i+"_"+key+"key").value;
+				if (keyval!=i) {
+					dict[keyval]=dict[i];
+					delete dict[i];
 				}
 				var d=new Date();
-				d.setFullYear($(dict.items[0][i]+"_"+key+"year").value, $(dict.items[0][i]+"_"+key+"month").value-1, $(dict.items[0][i]+"_"+key+"day").value);
-				d.setHours(parseInt($(dict.items[0][i]+"_"+key+"hr").value)+parseInt($(dict.items[0][i]+"_"+key+"tod").value), $(dict.items[0][i]+"_"+key+"min").value, $(dict.items[0][i]+"_"+key+"sec").value);
-				dict.items[1][i]=d;
-			} else if (dict.items[1][i] instanceof Dictionary) {
-				if ($(dict.items[0][i]+"_"+key+"key")!=null) {
-					var keyval=$(dict.items[0][i]+"_"+key+"key").value;
-					if (keyval!=dict.items[0][i]) {
-						dict.changeKey(dict.items[0][i], keyval);
+				d.setFullYear($(i+"_"+key+"year").value, $(i+"_"+key+"month").value-1, $(i+"_"+key+"day").value);
+				d.setHours(parseInt($(i+"_"+key+"hr").value)+parseInt($(i+"_"+key+"tod").value), $(i+"_"+key+"min").value, $(i+"_"+key+"sec").value);
+				dict[i]=d;
+			} else if (dict[i] instanceof Array || typeof dict[i]=="array") {
+				if ($(i+"_"+key+"key")!=null) {
+					var keyval=$(i+"_"+key+"key").value;
+					if (keyval!=i) {
+						dict[keyval]=dict[i];
+						delete dict[i];
 					}
 
-					dict.set(savedict(dict.items[1][i], dict.items[0][i]+"_"+key), keyval);
+					dict[keyval]=savearray(dict[i], i+"_"+key);
 				}
-			} else if (dict.items[1][i] instanceof Array || typeof dict.items[1][i]=="array") {
-				if ($(dict.items[0][i]+"_"+key+"key")!=null) {
-					var keyval=$(dict.items[0][i]+"_"+key+"key").value;
-					if (keyval!=dict.items[0][i]) {
-						dict.changeKey(dict.items[0][i], keyval);
+			} else if (typeof dict[i]!="function") {
+				if ($(i+"_"+key+"key")!=null) {
+					var keyval=$(i+"_"+key+"key").value;
+					if (keyval!=i) {
+						dict[keyval]=dict[i];
+						delete dict[i];
 					}
 
-					dict.set(savearray(dict.items[1][i], dict.items[0][i]+"_"+key), keyval);
+					dict[keyval]=savedict(dict[i], i+"_"+key);
 				}
 			}
 	}
@@ -193,6 +197,7 @@ function savedict(dict, key) {
 
 function save() {
 	alert(savedict(plroot, "root").exportXML());
+	alert(savedict(plroot, "root").exportASCII());
 }
 
 function dragOver(e) {
@@ -206,12 +211,13 @@ function fload(e) {
 		}
 
 		var dict=parseXMLPlist(new DOMParser().parseFromString(e.target.result, "text/xml"));
-		if (dict!=null && dict instanceof Dictionary) {
+		if (dict!=null && dict instanceof Object) {
 			plroot=dict;
 			$("doc").innerHTML=dictToHTML(dict, "root", 15);
 			if ($("loadimg")) {
 				$("loadimg").style.display="none";
 			}
+			$("toolbar").style.display="";
 		} else {
 			$("start").innerHTML="That isn't an XML plist...";
 			setTimeout($("start").innerHTML="Drag a File Here to Start", 2000);
@@ -280,10 +286,10 @@ function urlselect() {
 
 function showLaunch() {
 	if (!window.File || !window.FileList || !window.FileReader) {
-		//$("start").innerHTML="Browser not supported :(";
-		$("start").innerHTML="<input type=\"url\" id=\"fileselect\" style=\"width:80%; height:50px; position:absolute; left:10%; font-size:26px; border-width:0px;\" placeholder=\"Full File Path\">";
+		$("start").innerHTML="Sorry, but it doesn't look like your browser is supported.<br/><br/>May I recommend the latest version of either Firefox, Chrome, or Opera?";
+		/*$("start").innerHTML="<input type=\"url\" id=\"fileselect\" style=\"width:80%; height:50px; position:absolute; left:10%; font-size:26px; border-width:0px;\" placeholder=\"Full File Path\">";
 		$("fileselect").addEventListener("change", urlselect, false);
-		$("fileselect").focus();
+		$("fileselect").focus();*/
 	} else if (window.opera) {
 		$("start").innerHTML="<input type=\"file\" id=\"fileselect\" style=\"width:80%; height:50px; position:absolute; left:10%;\">";
 		$("fileselect").addEventListener("change", fselect, false);

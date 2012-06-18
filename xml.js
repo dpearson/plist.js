@@ -57,6 +57,14 @@ function objectForChildNode(childNode) {
 			obj=date;
 			break;
 
+		case "data":
+			obj=new Data();
+			if (childNode.childNodes.length>0) {
+				obj.value=childNode.childNodes[0].nodeValue;
+			}
+
+			break;
+
 		case "dict":
 			obj=parseXMLDictionary(childNode);
 			break;
@@ -122,11 +130,18 @@ function parseXMLArray(node) {
 
 Object.prototype.toPlistXML=function() {
 	var ret="<dict>\n";
-	var item;
 
 	for (var i in this) {
-		if (this[i] && typeof this[i]!="function") {
-			ret+="\t<key>"+i+"</key>\n\t"+this[i].toPlistXML()+"\n";
+		if (this[i]!=null && this[i].toPlistXML && typeof this[i]!="function") {
+			var xml=this[i].toPlistXML();
+			if (xml.indexOf("<dict>")>=0 || xml.indexOf("<array>")>=0) {
+					item=xml;
+					item=item.replace(/\n/g, "\n\t");
+					ret+="\t"+item+"\n";
+					item="";
+				} else {
+					ret+="\t"+xml+"\n";
+				}
 		}
 	}
 
@@ -160,13 +175,14 @@ Array.prototype.toPlistXML=function() {
 
 	for (var i=0; i<this.length; i++) {
 		if (this[1]!=null && this[i].toPlistXML) {
-			if (this[i] instanceof Dictionary || this[i] instanceof Array) {
-					item=this[i].toPlistXML();
+			var xml=this[i].toPlistXML();
+			if (xml.indexOf("<dict>")>=0 || xml.indexOf("<array>")>=0) {
+					item=xml;
 					item=item.replace(/\n/g, "\n\t");
 					ret+="\t"+item+"\n";
 					item="";
 				} else {
-					ret+="\t"+this[i].toPlistXML()+"\n";
+					ret+="\t"+xml+"\n";
 				}
 		}
 	}
@@ -183,3 +199,7 @@ Boolean.prototype.toPlistXML=function() {
 
 	return "<false/>";
 };
+
+Data.prototype.toPlistXML=function () {
+	return "<data>"+this.value+"</data>";
+}

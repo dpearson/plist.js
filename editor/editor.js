@@ -17,6 +17,8 @@ function arrayToHTML(ar, key, padding) {
 	for (var i=0; i<ar.length; i++) {
 		if (typeof ar[i]=="string" || ar[i] instanceof String) {
 			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\">Item "+i+"<input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+ar[i]+"\" id=\""+key+"_"+i+"\"></div>";
+		} else if (ar[i] instanceof Data) {
+			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\">Item "+i+"<input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+ar[i].value+"\" id=\""+key+"_"+i+"\"></div>";
 		} else if (typeof ar[i]=="number" || ar[i] instanceof Number) {
 			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\">Item "+i+"<input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+ar[i]+"\" id=\""+key+"_"+i+"\"></div>";
 		} else if (typeof ar[i]=="date" || ar[i] instanceof Date) {
@@ -62,6 +64,8 @@ function dictToHTML(dict, parent, padding) {
 	for (var i in dict) {
 		if (typeof dict[i]=="string" || dict[i] instanceof String || typeof dict[i]=="number" || dict[i] instanceof Number) {
 			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"><input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+dict[i]+"\" id=\""+i+"_"+parent+"val\"></div>";
+		} else if (dict[i] instanceof Data) {
+			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"><input type=\"text\" style=\"position:absolute; left:50%; width:45%; border-width:0px;\" value=\""+dict[i].value+"\" id=\""+i+"_"+parent+"val\"></div>";
 		} else if (typeof dict[i]=="date" || dict[i] instanceof Date) {
 			htmlCont+="<div style=\"width:100%; padding:"+padding+"px; position:relative; left:5%;\"><input type=\"text\" style=\"width:45%; border-width:0px; font-size:13px;\" value=\""+i+"\" id=\""+i+"_"+parent+"key\"><span style=\"position:absolute; left:50%; width:45%; border-width:0px;\"><select id=\""+i+"_"+parent+"month\">"
 			var months=["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -290,12 +294,12 @@ function showLaunch() {
 		/*$("start").innerHTML="<input type=\"url\" id=\"fileselect\" style=\"width:80%; height:50px; position:absolute; left:10%; font-size:26px; border-width:0px;\" placeholder=\"Full File Path\">";
 		$("fileselect").addEventListener("change", urlselect, false);
 		$("fileselect").focus();*/
-	} else if (window.opera) {
+	} else {
 		$("start").innerHTML="<input type=\"file\" id=\"fileselect\" style=\"width:80%; height:50px; position:absolute; left:10%;\">";
 		$("fileselect").addEventListener("change", fselect, false);
-	} else {
+	}/* else {
 		$("start").innerHTML="Drag a File Here to Start";
-	}
+	}*/
 }
 
 document.body.addEventListener("dragenter", dragOver, false);

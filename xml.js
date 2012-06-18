@@ -133,14 +133,15 @@ Object.prototype.toPlistXML=function() {
 
 	for (var i in this) {
 		if (this[i]!=null && this[i].toPlistXML && typeof this[i]!="function") {
+			var key="<key>"+i+"</key>";
 			var xml=this[i].toPlistXML();
 			if (xml.indexOf("<dict>")>=0 || xml.indexOf("<array>")>=0) {
 					item=xml;
 					item=item.replace(/\n/g, "\n\t");
-					ret+="\t"+item+"\n";
+					ret+="\t"+key+"\n\t"+item+"\n";
 					item="";
 				} else {
-					ret+="\t"+xml+"\n";
+					ret+="\t"+key+"\n\t"+xml+"\n";
 				}
 		}
 	}

@@ -5,5 +5,8 @@
 			"bin":"./lib",
 			"bare":true
 		}
-	]
+	],
+	"scripts":{
+		"bundle":"browserify lib/*.js -o lib/plist.bundle.js"
+	}
 }

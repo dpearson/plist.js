@@ -1,0 +1,27 @@
+{
+	"name": "plistjs",
+	"description": "A library for reading and creating Apple Property Lists",
+	"author": {
+		"name": "David Pearson",
+		"url": "http://dpearson.me"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dpearson/plistjs.git"
+	},
+	"version": "0.0.1",
+	"dependencies": {
+		"xmldom": "0.1.x"
+	},
+	"devDependencies": {
+		"oven-build": "0.x.x"
+	},
+	"engines": {
+		"node": "0.10.x",
+		"npm": "1.4.x"
+	},
+	"directories": {
+		"lib": "./lib"
+	},
+	"main": "./lib/plist.js"
+}

@@ -1,16 +1,29 @@
 {
 	"name": "plistjs",
-	"keywords": ["plist", "property", "list", "parser"],
+	"version": "0.0.3",
 	"description": "A library for reading and creating Apple Property Lists",
+	"keywords": ["plist", "property", "list", "parser"],
+	"homepage": "http://dpearson.me/plist.js/",
+	"bugs": {
+		"url": "https://github.com/dpearson/plist.js/issues",
+		"email": "dpearson@dpearson.me"
+	},
+	"license": "BSD-2-Clause",
 	"author": {
 		"name": "David Pearson",
 		"url": "http://dpearson.me"
 	},
+
+	"main": "./lib/plist.js",
+	"directories": {
+		"lib": "./lib"
+	},
+
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/dpearson/plistjs.git"
 	},
-	"version": "0.0.2",
+
 	"dependencies": {
 		"xmldom": "0.1.x"
 	},
@@ -20,9 +33,5 @@
 	"engines": {
 		"node": "0.10.x",
 		"npm": "1.4.x"
-	},
-	"directories": {
-		"lib": "./lib"
-	},
-	"main": "./lib/plist.js"
+	}
 }

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Plist.js by dpearson</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Plist.js</h1>
+        <h2>Javascript library for reading and creating Apple Property Lists (XML and ASCII only for now)</h2>
+        <a href="https://github.com/dpearson/plist.js" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h2>
+<a name="plistjs" class="anchor" href="#plistjs"><span class="octicon octicon-link"></span></a>plist.js</h2>
+
+<p>plist.js is just a simple library to read and create Apple property lists from Javascript.</p>
+
+<h3>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<pre><code>npm install plistjs
+</code></pre>
+
+<h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>First, import <code>plistjs</code> with:</p>
+
+<pre><code>plist = require "plistjs"
+</code></pre>
+
+<h4>
+<a name="parsing-a-property-list" class="anchor" href="#parsing-a-property-list"><span class="octicon octicon-link"></span></a>Parsing a Property List</h4>
+
+<pre><code>plist.parse(contents)
+</code></pre>
+
+<p><code>contents</code> is a string containing the contents of either an XML or ASCII plist, the type of which is automatically detected.</p>
+
+<p>A Javascript object is returned, representing the plist file.</p>
+
+<h4>
+<a name="exporting-a-javascript-object-as-a-property-list" class="anchor" href="#exporting-a-javascript-object-as-a-property-list"><span class="octicon octicon-link"></span></a>Exporting a Javascript Object as a Property List</h4>
+
+<pre><code>plist.serialize(pl, format)
+</code></pre>
+
+<p><code>pl</code> is the object to serialize, and <code>format</code> is either <code>plist.XML</code> or <code>plist.ASCII</code>.</p>
+
+<p>A string is returned that contains the resulting property list.</p>
+
+<h4>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h4>
+
+<pre><code>fs = require "fs"
+plist = require "./lib/plist"
+
+txt = fs.readFileSync("tests/test.plist").toString()
+pl = plist.parse txt
+
+pl["testbool"] = true
+
+output = plist.serialize pl, plist.XML
+</code></pre>
+
+<h3>
+<a name="supported-types" class="anchor" href="#supported-types"><span class="octicon octicon-link"></span></a>Supported Types</h3>
+
+<p>Current:</p>
+
+<ul>
+<li>XML</li>
+<li>ASCII</li>
+</ul><p>Planned:</p>
+
+<ul>
+<li>Binary</li>
+</ul><h3>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h3>
+
+<pre><code>Copyright (c) 2011-2014, David Pearson
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</code></pre>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/dpearson/plist.js/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/dpearson/plist.js/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/dpearson/plist.js"></a> is maintained by <a href="https://github.com/dpearson">dpearson</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>

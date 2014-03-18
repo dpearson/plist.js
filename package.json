@@ -1,5 +1,6 @@
 {
 	"name": "plistjs",
+	"keywords": ["plist", "property", "list", "parser"],
 	"description": "A library for reading and creating Apple Property Lists",
 	"author": {
 		"name": "David Pearson",
@@ -9,7 +10,7 @@
 		"type": "git",
 		"url": "https://github.com/dpearson/plistjs.git"
 	},
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"dependencies": {
 		"xmldom": "0.1.x"
 	},

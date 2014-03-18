@@ -214,7 +214,7 @@ function fload(e) {
 			$("loadimg").style.display="";
 		}
 
-		var dict=parseXMLPlist(new DOMParser().parseFromString(e.target.result, "text/xml"));
+		var dict=parse(e.target.result);
 		if (dict!=null && dict instanceof Object) {
 			plroot=dict;
 			$("doc").innerHTML=dictToHTML(dict, "root", 15);
@@ -223,7 +223,7 @@ function fload(e) {
 			}
 			$("toolbar").style.display="";
 		} else {
-			$("start").innerHTML="That isn't an XML plist...";
+			$("start").innerHTML="That isn't a valid plist...";
 			setTimeout($("start").innerHTML="Drag a File Here to Start", 2000);
 		}
 }

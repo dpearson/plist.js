@@ -1,0 +1,9 @@
+{
+	"directories":[
+		{
+			"src":"./src",
+			"bin":"./lib",
+			"bare":true
+		}
+	]
+}

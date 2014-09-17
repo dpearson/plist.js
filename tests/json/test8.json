@@ -1,0 +1,1 @@
+{"teststr":" \"This is a test.\"","testnum":" \"13.13\"","testbool":" \"false\"","testdate":" \"Sun Jul 03 2011 21:12:17 GMT-0400 (EDT)\"","testdict":{"teststr":" \"A nested test...\""},"testdict2":{"teststr2":" \"A nested test, part 2...\""},"testarray":[" \"testing...\", \"13\", "]}

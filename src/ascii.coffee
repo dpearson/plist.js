@@ -100,6 +100,7 @@ parseASCIIDictionary = (item) ->
 		key = keys[j].replace /\s/g, ""
 
 		if key is ""
+			j++
 			continue
 
 		if startsWithIgnoringSpace vals[j], "{"
